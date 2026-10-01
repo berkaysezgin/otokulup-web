@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>E-posta Onayı · OtoKulüp</title>
+<style>
+  :root{--primary:#FF6A13;--primary-soft:#FFF1E8;--bg:#F7F7F9;--surface:#fff;--border:#E8E8EC;
+        --text:#16161A;--text2:#6B6B76;--muted:#A3A3AD;--green:#22A45D;--green-soft:#E6F6EC;--red:#E5484D;--red-soft:#FDECEC}
+  *{box-sizing:border-box;margin:0}
+  body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px;
+       background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .card{width:100%;max-width:420px;background:var(--surface);border:1px solid var(--border);border-radius:24px;
+        padding:40px 28px 32px;text-align:center;box-shadow:0 12px 40px rgba(22,22,26,.06)}
+  .brand{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:15px;color:var(--text);margin-bottom:28px}
+  .brand i{width:28px;height:28px;border-radius:9px;background:var(--primary);display:grid;place-items:center}
+  .badge{width:84px;height:84px;border-radius:50%;margin:0 auto 20px;display:grid;place-items:center}
+  .ok .badge{background:var(--green-soft);color:var(--green)}
+  .err .badge{background:var(--red-soft);color:var(--red)}
+  .badge svg{width:42px;height:42px}
+  .ok .check{stroke-dasharray:48;stroke-dashoffset:48;animation:draw .6s .2s ease-out forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  h1{font-size:24px;line-height:1.25;font-weight:800;margin-bottom:10px}
+  p{color:var(--text2);font-size:15px}
+  .btn{display:block;margin-top:28px;padding:15px 20px;border-radius:14px;background:var(--primary);color:#fff;
+       font-weight:700;font-size:16px;text-decoration:none}
+  .btn:active{transform:scale(.98)}
+  .hint{margin-top:14px;font-size:13px;color:var(--muted)}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<main class="card ok" id="card">
+  <div class="brand">
+    <i><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11v6a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-1H8v1a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-6zm2.2-1h9.6l-1-3H8.2l-1 3zM7.5 14a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5zm9 0a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5z"/></svg></i>
+    OtoKulüp
+  </div>
+
+  <section id="ok">
+    <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="check" d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <h1>E-postan onaylandı</h1>
+    <p>Hesabın hazır. OtoKulüp uygulamasına dönüp e-posta ve şifrenle giriş yapabilirsin.</p>
+    <a class="btn hidden" id="open">Uygulamayı aç</a>
+    <p class="hint" id="desk">Bu sayfayı kapatabilirsin.</p>
+  </section>
+
+  <section id="err" class="hidden">
+    <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 7.5v6M12 17h.01"/></svg></div>
+    <h1 id="errTitle">Bağlantı geçersiz</h1>
+    <p id="errText">Bu onay bağlantısının süresi dolmuş ya da daha önce kullanılmış. Uygulamadan tekrar kayıt olmayı deneyerek yeni bir bağlantı isteyebilirsin.</p>
+  </section>
+</main>
+<script>
+  // Supabase onaydan sonra buraya yönlendirir: başarıda ?code=..., hatada #error=...&error_code=...
+  var q = new URLSearchParams(location.search);
+  var h = new URLSearchParams(location.hash.slice(1));
+  var code = q.get('error_code') || h.get('error_code');
+  var error = q.get('error') || h.get('error') || code;
+  if (error) {
+    document.getElementById('card').className = 'card err';
+    document.getElementById('ok').classList.add('hidden');
+    document.getElementById('err').classList.remove('hidden');
+    document.title = 'Bağlantı geçersiz · OtoKulüp';
+    if (code !== 'otp_expired' && code !== 'access_denied') {
+      document.getElementById('errTitle').textContent = 'Bir sorun oluştu';
+      document.getElementById('errText').textContent = 'E-postan onaylanamadı. Lütfen biraz sonra tekrar dene.';
+    }
+  } else if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    // Telefondaysa: aynı parametrelerle uygulamayı açıp oturumu otomatik başlat.
+    var btn = document.getElementById('open');
+    btn.href = 'com.otokulup.otokulup://login-callback' + location.search + location.hash;
+    btn.classList.remove('hidden');
+    document.getElementById('desk').textContent = 'Uygulama yüklü değilse önce mağazadan indir.';
+  }
+</script>
+</body>
+</html>
