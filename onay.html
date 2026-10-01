@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex">
 <title>E-posta Onayı · OtoKulüp</title>
 <style>
-  :root{--primary:#FF6A13;--primary-soft:#FFF1E8;--bg:#F7F7F9;--surface:#fff;--border:#E8E8EC;
+  :root{--primary:#14235A;--primary-soft:#F0F9CC;--accent:#C6F432;--navy:#0E1B3D;--bg:#F7F7F9;--surface:#fff;--border:#E8E8EC;
         --text:#16161A;--text2:#6B6B76;--muted:#A3A3AD;--green:#22A45D;--green-soft:#E6F6EC;--red:#E5484D;--red-soft:#FDECEC}
   *{box-sizing:border-box;margin:0}
   body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px;
@@ -14,7 +14,7 @@
   .card{width:100%;max-width:420px;background:var(--surface);border:1px solid var(--border);border-radius:24px;
         padding:40px 28px 32px;text-align:center;box-shadow:0 12px 40px rgba(22,22,26,.06)}
   .brand{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:15px;color:var(--text);margin-bottom:28px}
-  .brand i{width:28px;height:28px;border-radius:9px;background:var(--primary);display:grid;place-items:center}
+  .brand svg{width:30px;height:30px;display:block}
   .badge{width:84px;height:84px;border-radius:50%;margin:0 auto 20px;display:grid;place-items:center}
   .ok .badge{background:var(--green-soft);color:var(--green)}
   .err .badge{background:var(--red-soft);color:var(--red)}
@@ -33,7 +33,7 @@
 <body>
 <main class="card ok" id="card">
   <div class="brand">
-    <i><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11v6a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-1H8v1a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-6zm2.2-1h9.6l-1-3H8.2l-1 3zM7.5 14a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5zm9 0a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5z"/></svg></i>
+    <svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#0E1B3D"/><polygon points="84,50 67,79.4 33,79.4 16,50 33,20.6 67,20.6" fill="#C6F432" stroke="#C6F432" stroke-width="7" stroke-linejoin="round"/><circle cx="50" cy="50" r="19" fill="#0E1B3D"/><circle cx="50" cy="50" r="12.5" fill="none" stroke="#C6F432" stroke-width="3.6"/><circle cx="50" cy="50" r="3.6" fill="#C6F432"/><path d="M37.5 50 H46.4 M53.6 50 H62.5 M50 53.6 V62.5" stroke="#C6F432" stroke-width="3.6" stroke-linecap="round"/></svg>
     OtoKulüp
   </div>
 
